@@ -1,4 +1,4 @@
-# llama_mini.py — GPT tipo LLaMA mínimo (PyTorch), char y word
+# llama_mini.py - GPT tipo LLaMA mínimo (PyTorch), char y word
 # Arquitectura: RMSNorm + RoPE + SwiGLU, pre-norm, sin bias, embeddings atados.
 # Referencias: nanoGPT (loop de entrenamiento), rasbt/LLMs-from-scratch (GPT -> Llama),
 # litgpt (config TinyStories), potat0qwq/llm-from-scratch (RMSNorm+RoPE+SwiGLU),

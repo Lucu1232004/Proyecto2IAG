@@ -1,4 +1,4 @@
-# corpus_stats.md — Corpus baseline vs nuevo (congelado Día 1)
+# corpus_stats.md - Corpus baseline vs nuevo (congelado Día 1)
 
 | Métrica | Shakespeare (baseline notebook) | TinyStories-valid (corpus nuevo) |
 |---|---|---|

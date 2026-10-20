@@ -1,4 +1,4 @@
-# rag_local.py — Pipeline RAG evaluable para el Asistente Académico UAO
+# rag_local.py - Pipeline RAG evaluable para el Asistente Académico UAO
 # Soporta Ollama (nomic-embed-text + llama3.2:1b / phi3) + ChromaDB cuando están
 # disponibles, y un modo local determinista (TF-IDF unigramas y embeddings densos SVD
 # de n-gramas de palabras/caracteres + generador extractivo con citas) para pruebas

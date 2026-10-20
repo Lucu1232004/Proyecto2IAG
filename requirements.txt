@@ -1,0 +1,19 @@
+# Dependencias minimas para ejecutar los notebooks
+
+# Nucleo del modelo
+torch>=2.0
+numpy>=1.23
+pandas>=1.5
+matplotlib>=3.7
+
+# Ejecucion y lectura de notebooks
+nbformat>=5.9
+nbclient>=0.9
+ipykernel>=6.25
+jupyterlab>=4.0
+
+# RAG y documentos
+pymupdf>=1.23
+ollama>=0.4
+chromadb>=0.4
+gradio>=4.0
