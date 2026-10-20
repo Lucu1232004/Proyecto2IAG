@@ -1,0 +1,105 @@
+{
+  "no_rag": {
+    "hit_rate@1": 1.0,
+    "hit_rate@k": 1.0,
+    "MRR": 1.0,
+    "context_precision": 0.9917,
+    "context_recall": 1.0,
+    "faithfulness_proxy": 0.0,
+    "answer_relevance": 0.5,
+    "F1": 0.0,
+    "EM": 0.0,
+    "k": 3,
+    "n": 20
+  },
+  "tfidf_k1": {
+    "hit_rate@1": 0.75,
+    "hit_rate@k": 0.75,
+    "MRR": 0.75,
+    "context_precision": 0.75,
+    "context_recall": 0.725,
+    "faithfulness_proxy": 0.9871,
+    "answer_relevance": 0.7625,
+    "F1": 0.0505,
+    "EM": 0.5,
+    "k": 1,
+    "n": 20
+  },
+  "tfidf_k3": {
+    "hit_rate@1": 0.75,
+    "hit_rate@k": 1.0,
+    "MRR": 0.875,
+    "context_precision": 0.8833,
+    "context_recall": 1.0,
+    "faithfulness_proxy": 0.9871,
+    "answer_relevance": 0.7625,
+    "F1": 0.0505,
+    "EM": 0.5,
+    "k": 3,
+    "n": 20
+  },
+  "rag_dense_k3": {
+    "hit_rate@1": 1.0,
+    "hit_rate@k": 1.0,
+    "MRR": 1.0,
+    "context_precision": 0.9917,
+    "context_recall": 1.0,
+    "faithfulness_proxy": 1.0,
+    "answer_relevance": 0.9092,
+    "F1": 0.337,
+    "EM": 0.95,
+    "k": 3,
+    "n": 20
+  },
+  "ablation": [
+    {
+      "Configuración": "Ablación A: chunk=60/10, top-k=1, con citas",
+      "Nº Chunks": 10,
+      "top-k": 1,
+      "Hit-rate@1": 1.0,
+      "Hit-rate@k": 1.0,
+      "MRR": 1.0,
+      "Context Precision": 1.0,
+      "Faithfulness": 1.0,
+      "F1": 0.3343,
+      "EM": 0.9
+    },
+    {
+      "Configuración": "Ablación B: chunk=120/20, top-k=1, con citas",
+      "Nº Chunks": 6,
+      "top-k": 1,
+      "Hit-rate@1": 1.0,
+      "Hit-rate@k": 1.0,
+      "MRR": 1.0,
+      "Context Precision": 1.0,
+      "Faithfulness": 1.0,
+      "F1": 0.337,
+      "EM": 0.95
+    },
+    {
+      "Configuración": "Ablación C (Principal): chunk=120/20, top-k=3, con citas",
+      "Nº Chunks": 6,
+      "top-k": 3,
+      "Hit-rate@1": 1.0,
+      "Hit-rate@k": 1.0,
+      "MRR": 1.0,
+      "Context Precision": 0.9917,
+      "Faithfulness": 1.0,
+      "F1": 0.337,
+      "EM": 0.95
+    },
+    {
+      "Configuración": "Ablación D: chunk=240/40, top-k=3, sin citas",
+      "Nº Chunks": 3,
+      "top-k": 3,
+      "Hit-rate@1": 1.0,
+      "Hit-rate@k": 1.0,
+      "MRR": 1.0,
+      "Context Precision": 1.0,
+      "Faithfulness": 1.0,
+      "F1": 0.337,
+      "EM": 0.95
+    }
+  ],
+  "ood_accuracy": 0.75
+}

@@ -1,0 +1,11 @@
+SYLLABUS — INTELIGENCIA ARTIFICIAL GENERATIVA, INGENIERÍA DE DATOS E IA (extracto para el proyecto)
+
+PROFESORES: Jesús Alfonso López y José Luis Paniagua. Créditos: 3. Prerrequisito: Aprendizaje de Máquina.
+
+UNIDAD 1. Modelos generativos de texto con Transformers: tokenización a nivel de carácter y palabra, Transformer decoder-only, arquitectura tipo Llama con RMSNorm, SwiGLU y RoPE. Métricas: perplejidad, BPC y accuracy next-token.
+
+UNIDAD 2. Generación condicionada y muestreo: temperatura, top-k y nucleus sampling. Evaluación con BLEU, ROUGE y BERTScore, además de juicio humano ciego.
+
+UNIDAD 3. Retrieval-Augmented Generation con Ollama: embeddings con nomic-embed-text, base vectorial ChromaDB, modelos phi3 y llama3.2. Evaluación con RAGAS: faithfulness, answer relevance, context precision y context recall.
+
+PROYECTO 2. Entregables: códigos en Google Colab debidamente comentados y sustentación o video de hasta 20 minutos. El RAG debe usar una base de contexto de al menos tres documentos y reportar métricas de recuperación y generación.

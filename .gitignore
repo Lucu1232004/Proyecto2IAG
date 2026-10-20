@@ -1,0 +1,28 @@
+# Archivos internos que no van al repositorio
+GUION_VIDEO.md
+00_GUIA_Proyecto_GEN_IA.md
+planes/
+estado_arte/
+Entregable_Generacion_Texto_Transformers_GEN_IA_2026_2S.pdf
+Entregable_Generacion_Texto_Transformers_GEN_IA_2026_2S.md
+
+# Corpus pesados: los notebooks los descargan solos si faltan
+corpus_nuevo.txt
+shakespeare_baseline.txt
+
+# Artefactos de Python y Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.ipynb_checkpoints/**
+chroma_db/
+rag_docs_demo/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
