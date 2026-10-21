@@ -6,8 +6,8 @@
     "context_precision": 0.0,
     "context_recall": 0.0,
     "faithfulness_proxy": 0.0,
-    "answer_relevance": 0.5,
-    "F1": 0.0,
+    "answer_relevance": 0.8714,
+    "F1": 0.0175,
     "EM": 0.0,
     "k": 3,
     "n": 20
@@ -39,15 +39,15 @@
     "n": 20
   },
   "rag_dense_k3": {
-    "hit_rate@1": 1.0,
-    "hit_rate@k": 1.0,
-    "MRR": 1.0,
-    "context_precision": 0.9917,
-    "context_recall": 1.0,
-    "faithfulness_proxy": 1.0,
-    "answer_relevance": 0.9092,
-    "F1": 0.337,
-    "EM": 0.95,
+    "hit_rate@1": 0.85,
+    "hit_rate@k": 0.9,
+    "MRR": 0.8667,
+    "context_precision": 0.8333,
+    "context_recall": 0.9333,
+    "faithfulness_proxy": 0.5969,
+    "answer_relevance": 0.3417,
+    "F1": 0.1505,
+    "EM": 0.35,
     "k": 3,
     "n": 20
   },
@@ -56,13 +56,13 @@
       "Configuración": "Ablación A: chunk=60/10, top-k=1, con citas",
       "Nº Chunks": 10,
       "top-k": 1,
-      "Hit-rate@1": 1.0,
-      "Hit-rate@k": 1.0,
-      "MRR": 1.0,
-      "Context Precision": 1.0,
-      "Faithfulness": 1.0,
-      "F1": 0.3343,
-      "EM": 0.9
+      "Hit-rate@1": 0.85,
+      "Hit-rate@k": 0.85,
+      "MRR": 0.85,
+      "Context Precision": 0.85,
+      "Faithfulness": 0.506,
+      "F1": 0.1708,
+      "EM": 0.4
     },
     {
       "Configuración": "Ablación B: chunk=120/20, top-k=1, con citas",
@@ -72,34 +72,34 @@
       "Hit-rate@k": 1.0,
       "MRR": 1.0,
       "Context Precision": 1.0,
-      "Faithfulness": 1.0,
-      "F1": 0.337,
-      "EM": 0.95
+      "Faithfulness": 0.5426,
+      "F1": 0.1978,
+      "EM": 0.4
     },
     {
-      "Configuración": "Ablación C (Principal): chunk=120/20, top-k=3, con citas",
+      "Configuración": "Ablación C (Principal): chunk=120/20, top-k=3,...",
       "Nº Chunks": 6,
       "top-k": 3,
-      "Hit-rate@1": 1.0,
-      "Hit-rate@k": 1.0,
-      "MRR": 1.0,
-      "Context Precision": 0.9917,
-      "Faithfulness": 1.0,
-      "F1": 0.337,
-      "EM": 0.95
+      "Hit-rate@1": 0.85,
+      "Hit-rate@k": 0.9,
+      "MRR": 0.8667,
+      "Context Precision": 0.8333,
+      "Faithfulness": 0.5969,
+      "F1": 0.1505,
+      "EM": 0.35
     },
     {
       "Configuración": "Ablación D: chunk=240/40, top-k=3, sin citas",
       "Nº Chunks": 3,
       "top-k": 3,
-      "Hit-rate@1": 1.0,
+      "Hit-rate@1": 0.75,
       "Hit-rate@k": 1.0,
-      "MRR": 1.0,
-      "Context Precision": 1.0,
-      "Faithfulness": 1.0,
-      "F1": 0.337,
-      "EM": 0.95
+      "MRR": 0.8667,
+      "Context Precision": 0.8667,
+      "Faithfulness": 0.65,
+      "F1": 0.1295,
+      "EM": 0.3
     }
   ],
-  "ood_accuracy": 0.75
+  "ood_accuracy": 1.0
 }

@@ -10,7 +10,7 @@ Proyecto de la asignatura **Inteligencia Artificial Generativa** (Universidad Au
 
 ## Resultados principales
 
-Los puntos 1 y 2 se ejecutaron en Tesla T4 con la configuración completa. El punto 3 se ejecuta en Ollama; la tabla de RAG muestra el resultado del backend local determinista y se reemplaza con la corrida final en Kaggle de la versión corregida.
+Los tres puntos se ejecutaron en Tesla T4. Los puntos 1 y 2 usan la configuración completa. El punto 3 usa `nomic-embed-text` y `llama3.2:1b` en Ollama.
 
 | Modelo | Vocabulario | Parámetros | Test loss | Test PPL | Test BPC | Test acc | ROUGE-L |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -24,9 +24,9 @@ La perplejidad no se compara directamente entre los dos modelos porque el espaci
 | Sin RAG | 0.00 | 0.00 | 0.00 | 0.00 |
 | TF-IDF, top-k=1 | 0.75 | 0.75 | 0.99 | 0.50 |
 | TF-IDF, top-k=3 | 0.75 | 0.875 | 0.99 | 0.50 |
-| Denso + citas, top-k=3 | 1.00 | 1.00 | 1.00 | 0.95 |
+| Denso + citas, top-k=3 | 0.85 | 0.8667 | 0.60 | 0.35 |
 
-La tabla de RAG corresponde al backend local determinista. La corrida final con `nomic-embed-text` y `llama3.2:1b` en Ollama usa la versión `2026-10-21-hybrid-evidence` y reemplaza estos valores.
+La tabla corresponde a la corrida con `nomic-embed-text` y `llama3.2:1b` en Ollama. La recuperación es sólida: el fragmento correcto aparece en el top-3 en la mayoría de las preguntas. La generación es conservadora: el modelo se abstiene en varias preguntas aunque el contexto contenga la respuesta. La versión corregida de `rag_local.py` añade una verificación de evidencia que devuelve la frase textual con su cita cuando el modelo no conserva los datos; esa mejora queda documentada en el código y en la sección de limitaciones.
 
 ## Contenido del repositorio
 
@@ -79,4 +79,5 @@ jupyter notebook
 - **OOV en el modelo de palabra:** con un vocabulario de 10,000 palabras, el 3.1% de los tokens de validación quedan como `<UNK>`. Nombres propios y palabras raras se pierden.
 - **RAG con documentos cortos:** los tres extractos generan solo seis fragmentos. La recuperación es relativamente fácil y las métricas altas deben leerse con esa salvedad. Un corpus real exigiría más documentos y un paso de re-ranking.
 - **Métricas de RAG aproximadas:** `faithfulness` y `answer_relevance` se calculan con solapamiento léxico y morfológico, no con la suite RAGAS completa y un LLM juez. RAGAS queda como extensión.
+- **Generación con `llama3.2:1b`:** el modelo se abstiene en varias preguntas aunque el contexto contenga la respuesta. La verificación de evidencia reduce el problema, pero no lo elimina.
 - **Sin GQA ni caché KV:** no son necesarios para este tamaño de modelo, pero limitan escalar a contextos largos o a modelos mayores.
