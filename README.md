@@ -2,20 +2,22 @@
 
 Proyecto de la asignatura **Inteligencia Artificial Generativa** (Universidad Autónoma de Occidente). Tiene tres partes:
 
+**Estudiantes:** Samuel Patiño Lucumí y Nicolás Peña Irurita
+
 1. Generación a nivel de carácter con una arquitectura decoder-only tipo LLaMA.
 2. Generación a nivel de palabra sobre el mismo corpus y comparación rigurosa contra el nivel de carácter.
 3. Sistema RAG (Retrieval-Augmented Generation) con Ollama para responder preguntas sobre documentos académicos de la UAO.
 
 ## Resultados principales
 
-Estado actual: corrida local en CPU con configuración reducida. La corrida final en T4 y con Ollama la ejecuta Nicolás; al terminar se actualizan estas tablas, las figuras y los checkpoints. En GPU T4 los notebooks usan automáticamente `d=256`, 6 capas, 8 cabezas y 3000/2500 pasos.
+Los puntos 1 y 2 se ejecutaron en Tesla T4 con la configuración completa. El punto 3 se ejecuta en Ollama; la tabla de RAG muestra el resultado del backend local determinista y se reemplaza con la corrida final en Kaggle de la versión corregida.
 
 | Modelo | Vocabulario | Parámetros | Test loss | Test PPL | Test BPC | Test acc | ROUGE-L |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Char-LLaMA | 59 | 0.34M | 1.4194 | 4.13 | 2.048 | 0.567 | 0.175 |
-| Word-LLaMA | 10,000 | 1.29M | 5.7682 | 319.97 | 1.603 | 0.110 | 0.143 |
+| Char-LLaMA | 59 | 4.73M | 0.9085 | 2.48 | 1.311 | 0.726 | 0.158 |
+| Word-LLaMA | 10,000 | 7.28M | 4.2771 | 72.0 | 1.193 | 0.285 | 0.145 |
 
-La perplejidad no se compara directamente entre los dos modelos porque el espacio de salida es distinto (59 caracteres frente a 10,000 palabras). La comparación justa es el **BPC normalizado por carácter**: el modelo de palabra necesita 1.603 bits por carácter y el de carácter 2.048.
+La perplejidad no se compara directamente entre los dos modelos porque el espacio de salida es distinto (59 caracteres frente a 10,000 palabras). La comparación justa es el **BPC normalizado por carácter**: el modelo de palabra necesita 1.193 bits por carácter y el de carácter 1.311.
 
 | Sistema RAG | Hit-rate@1 | MRR | Faithfulness | Exact Match |
 |---|---:|---:|---:|---:|
@@ -24,7 +26,7 @@ La perplejidad no se compara directamente entre los dos modelos porque el espaci
 | TF-IDF, top-k=3 | 0.75 | 0.875 | 0.99 | 0.50 |
 | Denso + citas, top-k=3 | 1.00 | 1.00 | 1.00 | 0.95 |
 
-La tabla de RAG corresponde al backend local determinista. La corrida final con `nomic-embed-text` y `llama3.2:1b` en Ollama la ejecuta Nicolás y reemplazará estos valores.
+La tabla de RAG corresponde al backend local determinista. La corrida final con `nomic-embed-text` y `llama3.2:1b` en Ollama usa la versión `2026-10-21-hybrid-evidence` y reemplaza estos valores.
 
 ## Contenido del repositorio
 

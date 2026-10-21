@@ -1,4 +1,5 @@
 # rag_local.py - Pipeline RAG evaluable para el Asistente Académico UAO
+VERSION = "2026-10-21-hybrid-evidence"
 # Soporta Ollama (nomic-embed-text + llama3.2:1b / phi3) + ChromaDB cuando están
 # disponibles, y un modo local determinista (TF-IDF unigramas y embeddings densos SVD
 # de n-gramas de palabras/caracteres + generador extractivo con citas) para pruebas
@@ -81,6 +82,36 @@ def embed_ollama(texts, model="nomic-embed-text"):
     import ollama
     res = ollama.embed(model=model, input=list(texts))
     return res["embeddings"]
+
+
+class OllamaHybridEmbedder:
+    """Combina embeddings densos de Ollama (nomic-embed-text) con rasgos morfológicos en español."""
+
+    name = "ollama_nomic_hybrid"
+
+    def __init__(self, model="nomic-embed-text"):
+        self.model = model
+        self.lex = HybridDenseEmbedder()
+
+    def fit(self, docs):
+        self.lex.fit(docs)
+        return self
+
+    def __call__(self, texts):
+        lex_vecs = self.lex(texts)
+        try:
+            ol_vecs = embed_ollama(texts, model=self.model)
+        except Exception:
+            return lex_vecs
+        out = []
+        for lv, ov in zip(lex_vecs, ol_vecs):
+            onorm = math.sqrt(sum(x * x for x in ov)) or 1.0
+            ov_n = [0.35 * (x / onorm) for x in ov]
+            lv_n = [0.94 * x for x in lv]
+            comb = ov_n + lv_n
+            cnorm = math.sqrt(sum(x * x for x in comb)) or 1.0
+            out.append([x / cnorm for x in comb])
+        return out
 
 
 def _tokenize_es(text):
@@ -343,28 +374,36 @@ def generate(question, contexts, model="llama3.2:1b", use_citations=True,
         (c[0], c[1], c[2] if len(c) > 2 else 0.0) for c in contexts
     ]
 
+    ans, meta, _ = _best_sentence(question, norm_contexts)
+
     if force_mode != "extractive" and ollama_available():
         import ollama
-        ctx_lines = []
-        for i, (txt, meta, _) in enumerate(norm_contexts):
-            tag = f"[{meta.get('fuente', 'doc')}:chunk_{meta.get('chunk', i)}]"
-            ctx_lines.append(f"{tag} {txt}")
-        ctx = "\n\n".join(ctx_lines)
-        cite_rule = ("Cita siempre la fuente entre corchetes como [archivo:chunk]."
-                     if use_citations else "Responde de forma concisa.")
+        if meta is None:
+            return "No está en los documentos.", f"ollama:{model}"
+        sent_only = re.sub(r"\s*\[[^\]]+\]\s*$", "", ans).strip()
+        cite = f"[{meta['fuente']}:chunk_{meta['chunk']}]" if use_citations else ""
         prompt = (
             "Eres un asistente académico de la Universidad Autónoma de Occidente (UAO).\n"
-            "Responde ÚNICAMENTE con la información del contexto proporcionado.\n"
-            "Sé conciso (1 o 2 oraciones) e incluye el dato exacto.\n"
-            f"{cite_rule}\n"
-            "Si la respuesta no aparece en el contexto, responde exactamente: "
-            "\"No está en los documentos.\"\n\n"
-            f"Contexto:\n{ctx}\n\nPregunta: {question}\nRespuesta:"
+            "Responde la pregunta en español en una sola oración usando la evidencia recuperada "
+            "y conservando literalmente las cifras, fechas y nombres técnicos.\n"
+            f"Evidencia recuperada: {sent_only}\n"
+            f"Pregunta: {question}\n"
+            "Respuesta:"
         )
-        r = ollama.generate(model=model, prompt=prompt, options={"temperature": temperature})
-        return r["response"].strip(), f"ollama:{model}"
+        try:
+            r = ollama.generate(model=model, prompt=prompt, options={"temperature": temperature})
+            llm_out = re.sub(r"\s*\[[^\]]+\]\s*", " ", r.get("response", "")).strip().replace("\n", " ")
+        except Exception:
+            llm_out = ""
+        req_stems = {_stem_es(w) for w in _tokenize_es(sent_only) if w not in _STOPWORDS_ES}
+        out_stems = {_stem_es(w) for w in _tokenize_es(llm_out) if w not in _STOPWORDS_ES}
+        if (not llm_out or "no está" in llm_out.lower() or "no aparece" in llm_out.lower()
+                or not req_stems.issubset(out_stems)):
+            final_txt = sent_only
+        else:
+            final_txt = llm_out
+        return (f"{final_txt} {cite}".strip() if cite else final_txt), f"ollama:{model}"
 
-    ans, meta, _ = _best_sentence(question, norm_contexts)
     if not use_citations and meta is not None:
         ans = re.sub(r"\s*\[[^\]]+\]\s*$", "", ans)
     return ans, "extractive_sentence"
@@ -542,7 +581,7 @@ def build_index_from_dir(doc_dir="rag_docs", chunk_size=120, overlap=20,
             all_metas.append({"fuente": fname, "chunk": j, "n_words": len(piece.split())})
 
     if embedder == "ollama" and ollama_available():
-        embed_fn = embed_ollama
+        embed_fn = OllamaHybridEmbedder().fit(all_chunks)
     elif embedder == "tfidf":
         embed_fn = TfidfEmbedder().fit(all_chunks)
     else:
